@@ -19,7 +19,12 @@ require("dotenv").config();
 
 	// Wait for the page to load after logging in
 	await page.waitForNavigation();
-	await page.waitForTimeout(5000);
+
+	// Navigate to the Jobs page
+	await page.goto("https://www.linkedin.com/jobs/");
+
+    await page.waitForTimeout(5000);
+	
 
 	// Take a screenshot of the logged-in homepage
 	await page.screenshot({ path: "linkedin_homepage.png" });
