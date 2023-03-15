@@ -29,6 +29,15 @@ require("dotenv").config();
 	// Take a screenshot of the logged-in homepage
 	await page.screenshot({ path: "linkedin_homepage.png" });
 
+    await page.goto(
+		"https://www.linkedin.com/jobs/search/?currentJobId=3385232211&geoId=90000021&keywords=web%20developer&location=Cincinnati%20Metropolitan%20Area&refresh=true"
+	);
+
+    await page.waitForTimeout(5000);
+
+    await page.screenshot({ path: "jobs.png" });
+
+
 	// Close the browser instance
 	await browser.close();
 })();
