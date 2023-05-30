@@ -1,13 +1,20 @@
 const puppeteer = require("puppeteer");
 require("dotenv").config();
 
+let page = null;
+let browser = null;
 
 (async () => {
 	// Launch a new browser instance
-	const browser = await puppeteer.launch();
+	const browser = await puppeteer.launch({ headless: false });
 
 	// Open a new page and navigate to the LinkedIn login page
 	const page = await browser.newPage();
+	page.setViewport({
+		width: 1280,
+		height: 800,
+		isMobile: false,
+	});
 	await page.goto("https://www.linkedin.com/login");
 
 	// Fill in the username and password fields using the environment variables
@@ -23,21 +30,24 @@ require("dotenv").config();
 	// Navigate to the Jobs page
 	await page.goto("https://www.linkedin.com/jobs/");
 
-    await page.waitForTimeout(5000);
-	
+	// Wait for the page to load after navigating to the Jobs page
+	await page.waitForNavigation();
 
-	// Take a screenshot of the logged-in homepage
-	await page.screenshot({ path: "linkedin_homepage.png" });
-
-    await page.goto(
-		"https://www.linkedin.com/jobs/search/?currentJobId=3385232211&geoId=90000021&keywords=web%20developer&location=Cincinnati%20Metropolitan%20Area&refresh=true"
-	);
-
-    await page.waitForTimeout(5000);
-
-    await page.screenshot({ path: "jobs.png" });
+// click on the search bar
+	await page.waitFor(2000);
+	await page.click('input[class="jobs-search-box__text-input jobs-search-box__keyboard-text-input"]', "Software Engineer", {
+		delay: 5,
+	});
+	await page.click('input[class="jobs-search-box__text-input jobs-search-box__keyboard-text-input"]', "Software Engineer", {
+		delay: 5
+	});
 
 
-	// Close the browser instance
+	// Wait for the page to load after submitting the search query
+	await page.waitForNavigation();
+
+
+
+
 	await browser.close();
 })();
